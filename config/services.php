@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'blog' => [
+        'url' => 'https://6058adadc3f49200173aea7d.mockapi.io/api/Blog',
+    ]
+
 ];
