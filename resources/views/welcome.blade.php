@@ -8,7 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-        
+
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
         <!-- Styles -->
@@ -26,25 +26,7 @@
                     </div>
 
                     <ul class="divide-y divide-gray-200">
-                        <li class="py-12">
-                        <article class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline">
-                            <dl>
-                                <dt class="sr-only">Published on</dt>
-                                <dd class="text-base font-medium text-gray-500"><time datetime="2021-08-11T19:30:00.000Z">August 12, 2021</time></dd>
-                            </dl>
-                            <div class="space-y-5 xl:col-span-3">
-                                <div class="space-y-6">
-                                    <h2 class="text-2xl font-bold tracking-tight"><a class="text-gray-900" href="/tailwind-ui-ecommerce">Introducing Tailwind UI Ecommerce</a></h2>
-                                    <div class="prose max-w-none text-gray-500">
-                                        <div class="prose max-w-none">
-                                        <p>Almost 6 months in the making, we finally released <a href="https://tailwindui.com/#product-ecommerce">Tailwind UI Ecommerce</a> — the first all-new component kit for Tailwind UI since the initial launch back in February 2020.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-base font-medium"><a class="text-teal-600 hover:text-teal-700" aria-label="Read &quot;Introducing Tailwind UI Ecommerce&quot;" href="/tailwind-ui-ecommerce">Read more →</a></div>
-                            </div>
-                            </article>
-                        </li>
+                        @include('posts.listing');
                     </ul>
                 </div>
             </main>
