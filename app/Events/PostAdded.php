@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class BlogPostAdded
+class PostAdded implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,8 +20,7 @@ class BlogPostAdded
      * @return void
      */
     public function __construct()
-    {
-        //
+    {   
     }
 
     /**
@@ -31,6 +30,11 @@ class BlogPostAdded
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return ['my-channel'];
+    }
+
+    public function broadcastAs()
+    {
+        return 'my-event';
     }
 }
