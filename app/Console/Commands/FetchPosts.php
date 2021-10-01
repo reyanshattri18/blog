@@ -24,10 +24,10 @@ class FetchPosts extends Command
      * @var string
      */
     protected $description = 'Fetch Posts';
-    
+
     /**
      * Post Service Instance
-     * 
+     *
      * @var PostService
      */
     private $postService;
@@ -35,7 +35,7 @@ class FetchPosts extends Command
 
     /**
      * Flag to check if event should be fired
-     * 
+     *
      * @var boolean
      */
     private $fireEvent;
@@ -61,15 +61,20 @@ class FetchPosts extends Command
     {
         try {
             $allPosts = $this->postService->get();
-            
+
             $allPosts->chunk(100)->each(function ($posts) {
                 $posts->each(function ($post)  {
-                    $this->createPost($post); 
+                    $this->createPost($post);
                 });
             });
 
-            if ($this->fireEvent) event(new PostAdded);
-            
+            if ($this->fireEvent) {
+                $this->info('News posts added');
+                event(new PostAdded);
+            } else {
+                $this->info('No new Posts available');
+            }
+
         } catch (Exception $e) {
             Log::error($e);
         }
@@ -78,7 +83,7 @@ class FetchPosts extends Command
     /**
      * Insert or Update Post in Database
      * @param array $post
-     * 
+     *
      * @return Model
      */
     private function createPost ($post) {

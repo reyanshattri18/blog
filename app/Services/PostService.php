@@ -7,14 +7,14 @@ class PostService {
 
     /**
      * URL for the website
-     * 
+     *
      * @var string
      */
     private $url;
 
     /**
      * Constructor
-     * 
+     *
      * @return void
      */
     public function __construct () {
@@ -23,12 +23,12 @@ class PostService {
 
     /**
      * Fetch Posts from the website
-     * 
+     *
      * @return Illuminate\Support\Collection
      */
     public function get () {
         $response = Http::get($this->url);
         $data = json_decode($response, true);
-        return collect($data ?? []);
+        return collect($data['data'] ?? []);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class HomeController extends Controller
 {
 
     /**
@@ -33,6 +33,6 @@ class PostController extends Controller
     {
         $posts = $this->post->paginate(10);
 
-        return view($request->ajax() ? 'posts.listing' : 'welcome')->with(compact('posts'));
+        return view($request->ajax() ? 'home.listing' : 'home.index')->with(compact('posts'));
     }
 }
