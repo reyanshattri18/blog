@@ -74,7 +74,7 @@ class FetchPosts extends Command
      */
     private function createPost ($post) {
         $postDb = Post::updateOrCreate(
-            ['title' => $post['title']." ".time()],
+            ['title' => $post['title']],
             ['description' => $post['description'], 'publication_date' => $post['publication_date'], 'user_id' => 1]
         );
 
