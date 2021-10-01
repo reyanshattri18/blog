@@ -33,6 +33,6 @@ class PostController extends Controller
     {
         $posts = $this->post->paginate(10);
 
-        return view('welcome')->with(compact('posts'));
+        return view($request->ajax() ? 'posts.listing' : 'welcome')->with(compact('posts'));
     }
 }

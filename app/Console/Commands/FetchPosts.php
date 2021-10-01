@@ -30,6 +30,14 @@ class FetchPosts extends Command
      */
     private $postService;
 
+
+    /**
+     * Flag to check if event should be fired
+     * 
+     * @var boolean
+     */
+    private $fireEvent;
+
     /**
      * Create a new command instance.
      *
@@ -38,6 +46,7 @@ class FetchPosts extends Command
     public function __construct(PostService $postService)
     {
         parent::__construct();
+        $this->fireEvent = false;
         $this->postService = $postService;
     }
 
@@ -49,19 +58,29 @@ class FetchPosts extends Command
     public function handle()
     {
         $posts = $this->postService->get();
-        $newPostsAdded = false;
 
-        $posts->each(function ($post) use(&$newPostsAdded)  {
-            $postDb = Post::updateOrCreate(
-                ['title' => $post['title']],
-                ['description' => $post['description'], 'publication_date' => $post['publication_date'], 'user_id' => 1]
-            );
-
-            if ($postDb->wasRecentlyCreated)
-                $newPostsAdded = true; 
+        $posts->each(function ($post)  {
+            $postDb = $this->createPost($post); 
         });
 
-        if ($newPostsAdded)
-            event(new PostAdded);
+        if ($this->fireEvent) event(new PostAdded);
+    }
+
+    /**
+     * Insert or Update Post in Database
+     * @param array $post
+     * 
+     * @return Model
+     */
+    private function createPost ($post) {
+        $postDb = Post::updateOrCreate(
+            ['title' => $post['title']." ".time()],
+            ['description' => $post['description'], 'publication_date' => $post['publication_date'], 'user_id' => 1]
+        );
+
+        if ($postDb->wasRecentlyCreated)
+                $this->fireEvent = true;
+
+        return $postDb;
     }
 }
