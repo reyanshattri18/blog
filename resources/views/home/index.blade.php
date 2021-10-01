@@ -1,11 +1,16 @@
 @extends('layouts.default')
 @section('content')
 <div class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+    <div class="flex justify-end"> 
+        <div class="mt-3">
+            <a class="mr-2" href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </div>
     <main>
         <div class="divide-y divide-gray-200">
             <div class="pt-6 pb-8 space-y-2 md:space-y-5">
                 <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl md:text-[4rem] md:leading-[3.5rem]">Latest Posts</h1>
-                <p class="text-lg text-gray-500">All the latest CSS news, straight from the team.</p>
             </div>
             <input type="hidden" name="max_page" value="{{$posts->lastPage()}}">
             <ul class="divide-y divide-gray-200 post-content">
@@ -53,7 +58,7 @@
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
     // Enable pusher logging - don't include this in production
-    // Pusher.logToConsole = true;
+    //Pusher.logToConsole = true;
 
     var $modal = $('#modal')
     var $ajaxLoader = $('.ajax-loader')
@@ -79,6 +84,7 @@
 
     function closeModal () {
         $modal.removeClass('scale-100')
+        window.location.reload();
     }
 
     function loadMoreData(page) {

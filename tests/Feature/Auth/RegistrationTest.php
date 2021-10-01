@@ -19,6 +19,7 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register()
     {
+        $this->artisan('db:seed');
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',

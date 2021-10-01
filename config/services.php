@@ -31,7 +31,7 @@ return [
     ],
 
     'blog' => [
-        'url' => 'https://6058adadc3f49200173aea7d.mockapi.io/api/Blog',
+        'url' => 'https://sq1-api-test.herokuapp.com/posts',
     ]
 
 ];

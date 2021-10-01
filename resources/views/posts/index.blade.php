@@ -1,63 +1,64 @@
-@extends('layouts.master')
+@extends('layouts.main')
+
 
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Laravel 8 CRUD Example </h2>
+                <h2>Posts</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" href="" title="Create a product"> <i class="fas fa-plus-circle"></i>
-                    </a>
+                @can('post-create')
+                <a class="btn btn-success my-2" href="{{ route('posts.create') }}"> Create New Post</a>
+                @endcan
             </div>
         </div>
     </div>
 
+
     @if ($message = Session::get('success'))
         <div class="alert alert-success">
-            <p></p>
+            <p>{{ $message }}</p>
         </div>
     @endif
-
-    <table class="table table-bordered table-responsive-lg">
-        <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>description</th>
-            <th>Price</th>
-            <th>Date Created</th>
-            <th>Actions</th>
-        </tr>
-        @foreach ($products as $product)
+    
+    @if($posts->count() > 0)
+        <table class="table table-bordered">
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <th>No</th>
+                <th>Title</th>
+                <th>Publication</th>
+                <th width="280px">Action</th>
+            </tr>
+            @foreach ($posts as $post)
+            <tr>
+                <td>{{ ++$i }}</td>
+                <td>{{ $post->title }}</td>
+                <td>{{ $post->publication_date }}</td>
                 <td>
-                    <form action="" method="POST">
+                    <form action="{{ route('posts.destroy',$post->id) }}" method="POST">
+                        <a class="btn btn-info" href="{{ route('posts.show',$post->id) }}">Show</a>
+                        @can('post-edit')
+                        <a class="btn btn-primary" href="{{ route('posts.edit',$post->id) }}">Edit</a>
+                        @endcan
 
-                        <a href="" title="show">
-                            <i class="fas fa-eye text-success  fa-lg"></i>
-                        </a>
-
-                        <a href="">
-                            <i class="fas fa-edit  fa-lg"></i>
-                        </a>
 
                         @csrf
                         @method('DELETE')
-
-                        <button type="submit" title="delete" style="border: none; background-color:transparent;">
-                            <i class="fas fa-trash fa-lg text-danger"></i>
-                        </button>
+                        @can('post-delete')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        @endcan
                     </form>
                 </td>
             </tr>
-        @endforeach
-    </table>
+            @endforeach
+        </table>
+    @else
+        No Record Found!!
+    @endif
 
-    {!! $products->links() !!}
+
+    {!! $posts->links() !!}
+
 
 @endsection

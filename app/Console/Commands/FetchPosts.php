@@ -6,6 +6,7 @@ use Exception;
 use Log;
 use App\Models\Post;
 use App\Events\PostAdded;
+use App\Models\User;
 use App\Services\PostService;
 use Illuminate\Console\Command;
 
@@ -61,7 +62,7 @@ class FetchPosts extends Command
     {
         try {
             $allPosts = $this->postService->get();
-
+            
             $allPosts->chunk(100)->each(function ($posts) {
                 $posts->each(function ($post)  {
                     $this->createPost($post);
@@ -69,7 +70,7 @@ class FetchPosts extends Command
             });
 
             if ($this->fireEvent) {
-                $this->info('News posts added');
+                $this->info('New posts added');
                 event(new PostAdded);
             } else {
                 $this->info('No new Posts available');
@@ -89,12 +90,25 @@ class FetchPosts extends Command
     private function createPost ($post) {
         $postDb = Post::updateOrCreate(
             ['title' => $post['title']],
-            ['description' => $post['description'], 'publication_date' => $post['publication_date'], 'user_id' => 1]
+            ['description' => $post['description'], 
+            'publication_date' => $post['publication_date'], 
+            'user_id' => $this->getAdminUser()
+            ]
         );
-
-        if ($postDb->wasRecentlyCreated)
-                $this->fireEvent = true;
+        
+        if ($postDb->wasRecentlyCreated) {
+            $this->fireEvent = true;
+        }
 
         return $postDb;
+    }
+
+    /**
+     * Get Admin user id
+     *
+     * @return int
+     */
+    private function getAdminUser () {
+        return User::role('admin')->first()->id; 
     }
 }

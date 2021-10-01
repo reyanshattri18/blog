@@ -1,4 +1,4 @@
-@foreach($posts as $post)
+@forelse($posts as $post)
 <li class="py-12">
   <article class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline">
     <dl>
@@ -14,8 +14,9 @@
                 </div>
             </div>
         </div>
-        <div class="text-base font-medium"><a class="text-teal-600 hover:text-teal-700" aria-label="Read &quot;Introducing Tailwind UI Ecommerce&quot;" href="javascript:void(0);">Read more →</a></div>
     </div>
     </article>
 </li>
-@endforeach
+@empty
+    No record found
+@endforelse

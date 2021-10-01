@@ -31,7 +31,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = $this->post->paginate(10);
+        $posts = $this->post->orderbyPublicationDate()->paginate(10);
 
         return view($request->ajax() ? 'home.listing' : 'home.index')->with(compact('posts'));
     }
