@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Exception;
+use Log;
 use App\Models\Post;
 use App\Events\PostAdded;
 use App\Services\PostService;
@@ -57,13 +59,20 @@ class FetchPosts extends Command
      */
     public function handle()
     {
-        $posts = $this->postService->get();
+        try {
+            $allPosts = $this->postService->get();
+            
+            $allPosts->chunk(100)->each(function ($posts) {
+                $posts->each(function ($post)  {
+                    $this->createPost($post); 
+                });
+            });
 
-        $posts->each(function ($post)  {
-            $postDb = $this->createPost($post); 
-        });
-
-        if ($this->fireEvent) event(new PostAdded);
+            if ($this->fireEvent) event(new PostAdded);
+            
+        } catch (Exception $e) {
+            Log::error($e);
+        }
     }
 
     /**
