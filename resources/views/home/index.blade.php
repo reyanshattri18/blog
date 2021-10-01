@@ -1,12 +1,31 @@
 @extends('layouts.default')
 @section('content')
 <div class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+@guest
     <div class="flex justify-end"> 
         <div class="mt-3">
             <a class="mr-2" href="/login">Login</a>
             <a href="/register">Register</a>
         </div>
     </div>
+@else
+    <div class="flex justify-end"> 
+        <div class="mt-3">
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
+                </a>
+
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </div>
+        </div>
+    </div>
+@endguest
     <main>
         <div class="divide-y divide-gray-200">
             <div class="pt-6 pb-8 space-y-2 md:space-y-5">
